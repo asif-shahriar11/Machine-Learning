@@ -14,6 +14,7 @@ class GaussianMixture:
         self.max_iterations = max_iterations
         self.epsilon = epsilon
         self.delay = delay
+        self.dim = data.shape[1]
 
         self.best_log_likelihoods = {} # key: K, value: log likelihood
         self.best_weights = {} # key: K, value: weights
@@ -238,7 +239,7 @@ class GaussianMixture:
 
         def draw_ellipse(position, covariance, ax=None, **kwargs):
             ax = ax or plt.gca()
-            if covariance.shape == (2, 2):
+            if covariance.shape == (self.dim, self.dim):
                 U, s, Vt = np.linalg.svd(covariance)
                 angle = np.degrees(np.arctan2(U[1, 0], U[0, 0]))
                 width, height = 2 * np.sqrt(s)
@@ -282,7 +283,7 @@ class GaussianMixture:
         ax.scatter(self.data[:, 0], self.data[:, 1], s=30, alpha=0.5, label='Data Points', edgecolor='k', zorder=1)
 
         def draw_ellipse_2(position, covariance, ax, alpha, color, edgecolor, label=None):
-            if covariance.shape == (2, 2):
+            if covariance.shape == (self.dim, self.dim):
                 U, s, Vt = np.linalg.svd(covariance)
                 angle = np.degrees(np.arctan2(U[1, 0], U[0, 0]))
                 width, height = 2 * np.sqrt(2.0 * s)
